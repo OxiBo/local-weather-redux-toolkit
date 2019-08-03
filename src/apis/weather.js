@@ -6,11 +6,7 @@ require("dotenv").config();
 const KEY = process.env.REACT_APP_WEATHER_KEY;
 
 const getWeather = axios.create({
-  baseURL: "https://api.openweathermap.org/data/2.5",
-  params: {
-    appid: KEY,
-    units: "metric"
-  }
+  baseURL: "https://api.openweathermap.org/data/2.5/"
 });
 
 const weatherInfo = async (lat, lon) => {
@@ -21,8 +17,10 @@ const weatherInfo = async (lat, lon) => {
     try {
       const weatherResponse = await getWeather.get("/weather?", {
         params: {
+          appid: KEY,
           lat,
-          lon
+          lon,
+          units: "metric"
         }
       });
 
@@ -68,7 +66,6 @@ const weatherInfo = async (lat, lon) => {
   const { temperature, apiID, additionalDescription } = response;
 
   // find a query word for searching for background
-
   if (temperature && apiID) {
     const backgroundImgDescription = findBackground(
       temperature,

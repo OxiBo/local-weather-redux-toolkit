@@ -77,7 +77,7 @@ const findBackground = (temp, id, additionalDescription) => {
       backgroundImgDescription = false;
     };
 
-    
+
     return backgroundImgDescription;
 }
 

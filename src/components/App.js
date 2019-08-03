@@ -1,131 +1,24 @@
 import React, { Component } from "react";
-// import { location } from "../apis/location";
-import { weatherInfo } from "../apis/weather";
+import { connect } from "react-redux";
+import { fetchLocation, fetchWeather } from "./../actions";
 import "./styles.scss";
-import defaultImg from "../gallery/default1.jpg";
-// import SearchBar from "./SearchBar";
 import WeatherDisplay from "./WeatherDisplay";
-// import ToggleTemp from "./ToggleTemp";
 import UpdateInfo from "./UpdateInfo";
 
-export default class App extends Component {
-  state = {
-    city: "",
-    region: "",
-    country: "",
-    coords: {
-      latitude: null,
-      longitude: null
-    },
-    isLocationLoading: true,
-    updatedTime: "",
-    updateInterval: "",
-    interval: "",
-    locationError: "",
-    icon: "",
-    temperature: null,
-    humidity: null,
-    description: "",
-    additionalDescription: "",
-    apiID: null,
-    backgroundImageUrl: defaultImg,
-    weatherAPIError: "",
-    isWeatherLoading: true
-  };
+class App extends Component {
 
-  componentWillUnmount() {
-    clearInterval(this.clearInterval);
-    document.body.style.backgroundColor = null;
+  componentDidMount() {
+    // set background
+    document.body.style.backgroundImage = `url(${this.props.backgroundImageUrl}`;
   }
-
-  onSubmit = async (interval) => {
-    const milliseconds = interval * 360000;
-    await this.setState({ updateInterval: milliseconds, interval: interval });
-    this.clearInterval = setInterval(async () => {
-     
-      this.getWeather( await weatherInfo(this.state.coords.longitude, this.state.coords.latitude))
-    }, this.state.updateInterval);
-  };
-
-  getLocation = locationInfo => {
-    const {
-      city,
-      region,
-      country,
-      coords,
-      isLocationLoading,
-      locationError,
-      isWeatherLoading
-    } = locationInfo;
-
-    this.setState({
-      city,
-      region,
-      country,
-      coords,
-      isLocationLoading,
-      locationError,
-      isWeatherLoading
-    });
-  };
-
-  getWeather = weatherDetails => {
-    const {
-      weatherAPIError,
-      updatedTime,
-      icon,
-      temperature,
-      humidity,
-      description,
-      additionalDescription,
-      windSpeed,
-      apiID,
-      backgroundImageUrl,
-      isWeatherLoading,
-      isLocationLoading
-    } = weatherDetails;
-
-    this.setState({
-      weatherAPIError,
-      updatedTime,
-      icon,
-      temperature,
-      humidity,
-      description,
-      additionalDescription,
-      windSpeed,
-      apiID,
-      backgroundImageUrl,
-      isWeatherLoading,
-      isLocationLoading
-    });
-
-    // // set background
-    // document.body.style.backgroundImage = `url(${
-    //   this.state.backgroundImageUrl
-    // })`;
-  };
 
   render() {
     const {
-      coords: { longitude, latitude },
-      city,
-      region,
-      country,
       isLocationLoading,
-      locationError,
-      updatedTime,
-      interval,
-      icon,
-      temperature,
-      humidity,
-      description,
-      windSpeed,
-      weatherAPIError,
       isWeatherLoading,
-      backgroundImageUrl
-    } = this.state;
-
+      locationError,
+      weatherAPIError
+    } = this.props;
     return (
       <div className="mainContainer">
         <div className="main">
@@ -138,35 +31,11 @@ export default class App extends Component {
             ) : locationError || weatherAPIError ? (
               false
             ) : (
-              <UpdateInfo
-                isLocationLoading={isLocationLoading}
-                isWeatherLoading={isWeatherLoading}
-                updatedTime={updatedTime}
-                interval={interval}
-                onSubmit={this.onSubmit}
-                lon={longitude}
-                lat={latitude}
-              />
+              <UpdateInfo />
             )}
           </header>
 
-          <WeatherDisplay
-            lat={this.state.coords.latitude}
-            lon={this.state.coords.longitude}
-            getLocation={this.getLocation}
-            getWeather={this.getWeather}
-            city={city}
-            region={region}
-            country={country}
-            locationError={locationError}
-            icon={icon}
-            temperature={temperature}
-            humidity={humidity}
-            description={description}
-            windSpeed={windSpeed}
-            weatherAPIError={weatherAPIError}
-            backgroundImageUrl={backgroundImageUrl}
-          />
+          <WeatherDisplay />
         </div>
 
         <footer>
@@ -176,3 +45,17 @@ export default class App extends Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    isLocationLoading: state.locationDetails.isLocationLoading,
+    locationError: state.locationDetails.locationError,
+    isWeatherLoading: state.weatherDetails.isWeatherLoading,
+    weatherAPIError: state.weatherDetails.weatherAPIError,
+    backgroundImageUrl: state.weatherDetails.weatherDetails.backgroundImageUrl
+  };
+};
+export default connect(
+  mapStateToProps,
+  { fetchLocation, fetchWeather }
+)(App);
