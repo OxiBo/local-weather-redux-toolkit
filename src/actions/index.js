@@ -3,6 +3,7 @@ import { weatherInfo } from "../apis/weather";
 
 export const fetchLocation = () => async dispatch => {
   const response = await location();
+  
   if (response.locationError) {
     dispatch({ type: "LOCATION_ERROR" });
   } else {
@@ -15,9 +16,10 @@ export const fetchWeather = () => async (dispatch, getState) => {
     latitude,
     longitude
   } = getState().locationDetails.locationDetails.coords;
+
   const response = await weatherInfo(latitude, longitude);
   if (response.weatherAPIError) {
-    dispatch({ type: "WEATHER_FETCH_ERROR" });
+    dispatch({ type: "FETCH_WEATHER_ERROR" });
   } else {
     dispatch({ type: "FETCH_WEATHER", payload: response });
   }
@@ -44,18 +46,30 @@ export const clearInputInterval = () => {
   };
 };
 
-export const setIntervalID = (intervalID) => {
-    return {
-        type: "CLEAR_INTERVAL_ID",
-        intervalID 
-    }
-}
+export const setIntervalID = intervalID => {
+  return {
+    type: "CLEAR_INTERVAL_ID",
+    intervalID
+  };
+};
 
-// export const fetchQuote = () => async dispatch => {
-//     const response = await newQuote();
-//     if (response.error) {
-//       dispatch({ type: "ERROR", payload: response.error, isLoading: false });
-//     } else {
-//       dispatch({ type: "FETCH_QUOTE", payload: response });
-//     }
-//   };
+// // I prefer a ToggleTemp component with it's own state and toggle function
+// export const toggleTemperature = () => (dispatch, getState) => {
+//   const { temperature } = getState().weatherDetails.weatherDetails;
+
+//   const fahrenheit = getState().toggleTemp.toggleTemp.fahrenheit;
+
+//   if (!fahrenheit) {
+//     dispatch({
+//       type: "GET_FAHRENHEIT",
+//       temp: temperature,
+//       fahrenheit: fahrenheit
+//     });
+//   } else {
+//     dispatch({
+//       type: "GET_CELSIUS",
+//       temp: temperature,
+//       fahrenheit: fahrenheit
+//     });
+//   }
+// };
