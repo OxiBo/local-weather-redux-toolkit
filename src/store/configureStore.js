@@ -2,7 +2,7 @@ import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 import thunk from "redux-thunk";
 
 import { fetchLocationReducer, fetchWeatherReducer, setUpdateIntervalReducer } from "./../reducers";
-
+// import { fetchLocationReducer, fetchWeatherReducer, setUpdateIntervalReducer, toggleTempReducer } from "./../reducers";
 // setup redux extention https://github.com/zalmoxisus/redux-devtools-extension#usage (1.2  Advanced store setup)
 
 export default () => {
@@ -13,7 +13,8 @@ export default () => {
     combineReducers({
       locationDetails: fetchLocationReducer,
       weatherDetails: fetchWeatherReducer,
-      setUpdateInterval: setUpdateIntervalReducer
+      setUpdateInterval: setUpdateIntervalReducer,
+      // toggleTemp: toggleTempReducer
     }),
     composeEnhancers(applyMiddleware(thunk))
   );
