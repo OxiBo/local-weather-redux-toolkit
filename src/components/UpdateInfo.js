@@ -6,17 +6,16 @@ import SearchBar from "./SearchBar";
 const UpdateInfo = props => {
   const { isLocationLoading, isWeatherLoading, updatedTime, interval } = props;
   return (
-    <div>
+    <div className="update-bar">
       <SearchBar />
       {interval && (
-        <div>
+        <div className="updated">
           <p>
             The weather will be updated every{" "}
             {interval === "1" ? "hour" : `${interval} hours`}
           </p>
         </div>
       )}
-      {/* using "==" when checking the condition because don't need strict equality (don't need to compare value and type) */}
       <div className="updated">
         <p>
           {" "}

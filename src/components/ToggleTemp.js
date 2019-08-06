@@ -1,6 +1,7 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 
-export default class ToggleTemp extends Component {
+class ToggleTemp extends Component {
   state = {
     displayTemp: null,
     fahrenheit: true,
@@ -9,7 +10,7 @@ export default class ToggleTemp extends Component {
 
   componentDidMount() {
     this.setState({
-      displayTemp: this.props.temp.toFixed(1)
+      displayTemp: this.props.temperature.toFixed(1)
     });
   }
 
@@ -17,13 +18,13 @@ export default class ToggleTemp extends Component {
   toggleTemp = () => {
     if (this.state.fahrenheit) {
       this.setState(prevState => ({
-        displayTemp: (this.props.temp * 1.8 + 32).toFixed(2),
+        displayTemp: (this.props.temperature * 1.8 + 32).toFixed(2),
         unit: "\u2109",
         fahrenheit: !prevState.fahrenheit
       }));
     } else {
       this.setState(prevState => ({
-        displayTemp: this.props.temp.toFixed(1),
+        displayTemp: this.props.temperature.toFixed(1),
         unit: "\u2103",
         fahrenheit: !prevState.fahrenheit
       }));
@@ -44,3 +45,13 @@ export default class ToggleTemp extends Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    temperature: state.weatherDetails.weatherDetails.temperature,
+  };
+};
+
+export default connect(
+  mapStateToProps
+)(ToggleTemp);

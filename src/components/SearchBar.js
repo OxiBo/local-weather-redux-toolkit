@@ -2,14 +2,24 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 import {
+  fetchWeather,
   changeIntervalInput,
-  setIntervalUpdate
+  setIntervalUpdate,
+  setIntervalID
 } from "./../actions";
 
 class SearchBar extends Component {
   onFormSubmit = async event => {
     event.preventDefault();
     await this.props.setIntervalUpdate(this.props.visibleInterval);
+
+    const intervalID = setInterval(async () => {
+      await this.props.fetchWeather();
+    
+      //updateBackground
+      document.body.style.backgroundImage = `url(${ this.props.backgroundImageUrl })`;
+    }, this.props.millisecondsInterval);
+    setIntervalID(intervalID);
   };
 
   onChange = event => {
@@ -45,12 +55,14 @@ class SearchBar extends Component {
 
 const mapStateToProps = state => {
   return {
-    visibleInterval: state.setUpdateInterval.visibleInterval
+    visibleInterval: state.setUpdateInterval.visibleInterval,
+    backgroundImageUrl: state.weatherDetails.weatherDetails.backgroundImageUrl,
+    millisecondsInterval: state.setUpdateInterval.millisecondsInterval
   };
 };
 export default connect(
   mapStateToProps,
-  { changeIntervalInput, setIntervalUpdate }
+  { fetchWeather, changeIntervalInput, setIntervalUpdate, setIntervalID }
 )(SearchBar);
 
 //   onChange={e => this.setState({ interval: e.target.value })

@@ -1,15 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchLocation, fetchWeather } from "./../actions";
+import { fetchLocation } from "./../actions";
 import "./styles.scss";
 import WeatherDisplay from "./WeatherDisplay";
 import UpdateInfo from "./UpdateInfo";
-
+// import defaultImg from "../gallery/default1.jpg";
 class App extends Component {
-
-  componentDidMount() {
-    // set background
-    document.body.style.backgroundImage = `url(${this.props.backgroundImageUrl}`;
+  async componentDidMount() {
+    await this.props.fetchLocation();
   }
 
   render() {
@@ -19,23 +17,27 @@ class App extends Component {
       locationError,
       weatherAPIError
     } = this.props;
+
     return (
       <div className="mainContainer">
         <div className="main">
           <header>
             <h1>Local weather APP</h1>
             <hr />
-
-            {isLocationLoading || isWeatherLoading ? (
-              <h3> Loading... </h3>
-            ) : locationError || weatherAPIError ? (
-              false
-            ) : (
-              <UpdateInfo />
-            )}
           </header>
+          {isLocationLoading || isWeatherLoading ? (
+            <h3> Loading... </h3>
+          ) : locationError ? (
+            <div className="errorMessage">{locationError}</div>
+          ) : this.props.weatherAPIError ? (
+            <div className="errorMessage">{weatherAPIError}</div>
+          ) : (
+            <UpdateInfo />
+          )}
 
-          <WeatherDisplay />
+          {!isLocationLoading && !locationError && !weatherAPIError && (
+            <WeatherDisplay />
+          )}
         </div>
 
         <footer>
@@ -51,11 +53,10 @@ const mapStateToProps = state => {
     isLocationLoading: state.locationDetails.isLocationLoading,
     locationError: state.locationDetails.locationError,
     isWeatherLoading: state.weatherDetails.isWeatherLoading,
-    weatherAPIError: state.weatherDetails.weatherAPIError,
-    backgroundImageUrl: state.weatherDetails.weatherDetails.backgroundImageUrl
+    weatherAPIError: state.weatherDetails.weatherAPIError
   };
 };
 export default connect(
   mapStateToProps,
-  { fetchLocation, fetchWeather }
+  { fetchLocation }
 )(App);
