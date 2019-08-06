@@ -1,5 +1,3 @@
-import defaultImg from "../gallery/default1.jpg";
-
 const locationReducerDefaultState = {
   locationDetails: {
     city: "",
@@ -52,6 +50,7 @@ const weatherReducerDefaultState = {
   weatherDetails: {
     icon: "",
     temperature: null,
+    displayTemp: "",
     humidity: null,
     description: "",
     additionalDescription: "",
@@ -59,10 +58,10 @@ const weatherReducerDefaultState = {
     apiID: null,
     weatherAPIError: "",
     updatedTime: "",
-    backgroundImageUrl: defaultImg
+    backgroundImageUrl: ""
   },
   weatherAPIError: "",
-  isWeatherLoading: true
+  isWeatherLoading: false
 };
 
 export const fetchWeatherReducer = (
@@ -74,6 +73,7 @@ export const fetchWeatherReducer = (
       const {
         icon,
         temperature,
+        displayTemp,
         humidity,
         description,
         additionalDescription,
@@ -83,11 +83,13 @@ export const fetchWeatherReducer = (
         updatedTime,
         backgroundImageUrl
       } = action.payload;
+      // console.log(state)
       return {
         ...state,
         weatherDetails: {
           icon,
           temperature,
+          displayTemp,
           humidity,
           description,
           additionalDescription,
@@ -99,7 +101,7 @@ export const fetchWeatherReducer = (
         },
         isWeatherLoading: false
       };
-    case "WEATHER_FETCH_ERROR":
+    case "FETCH_WEATHER_ERROR":
       return {
         ...state,
         isLocationLoading: false,
@@ -115,7 +117,7 @@ const setUpdateIntervalDefaultState = {
   interval: "",
   visibleInterval: "",
   millisecondsInterval: null,
-  intervalID: ""
+  intervalID: null
 };
 
 export const setUpdateIntervalReducer = (
@@ -145,3 +147,41 @@ export const setUpdateIntervalReducer = (
       return state;
   }
 };
+
+// const defaultToggleTempReducer = {
+//   toggleTemp: {
+//     displayTemp: "",
+//     fahrenheit: false,
+//     unit: "\u2103"
+//   }
+// };
+
+
+// // I prefer a ToggleTemp component with it's own state and toggle function
+// export const toggleTempReducer = (state = defaultToggleTempReducer, action) => {
+//   switch (action.type) {
+//     case "GET_FAHRENHEIT":
+//       return {
+//         ...state,
+//         toggleTemp: {
+//           displayTemp: (action.temp * 1.8 + 32).toFixed(2),
+//           fahrenheit: !action.fahrenheit,
+//           unit: "\u2109"
+//         }
+       
+//       };
+
+//     case "GET_CELSIUS":
+//       return {
+//         ...state,
+//         toggleTemp: {
+//           displayTemp: action.temp.toFixed(1),
+//         fahrenheit: !action.fahrenheit,
+//         unit: "\u2103"
+//         }
+        
+//       };
+//     default:
+//       return state;
+//   }
+// };
