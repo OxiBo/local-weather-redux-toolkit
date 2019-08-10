@@ -50,7 +50,6 @@ const weatherReducerDefaultState = {
   weatherDetails: {
     icon: "",
     temperature: null,
-    displayTemp: "",
     humidity: null,
     description: "",
     additionalDescription: "",
@@ -73,7 +72,6 @@ export const fetchWeatherReducer = (
       const {
         icon,
         temperature,
-        displayTemp,
         humidity,
         description,
         additionalDescription,
@@ -89,7 +87,6 @@ export const fetchWeatherReducer = (
         weatherDetails: {
           icon,
           temperature,
-          displayTemp,
           humidity,
           description,
           additionalDescription,
