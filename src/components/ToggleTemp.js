@@ -16,15 +16,16 @@ class ToggleTemp extends Component {
 
   // toggle temperature from degrees Celsius to Fahrenheit
   toggleTemp = () => {
+    const { temperature } = this.props;
     if (this.state.fahrenheit) {
       this.setState(prevState => ({
-        displayTemp: (this.props.temperature * 1.8 + 32).toFixed(2),
+        displayTemp: (temperature * 1.8 + 32).toFixed(2),
         unit: "\u2109",
         fahrenheit: !prevState.fahrenheit
       }));
     } else {
       this.setState(prevState => ({
-        displayTemp: this.props.temperature.toFixed(1),
+        displayTemp: temperature.toFixed(1),
         unit: "\u2103",
         fahrenheit: !prevState.fahrenheit
       }));

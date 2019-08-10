@@ -1,15 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import defaultImg from "../gallery/default1.jpg";
-import {  fetchWeather } from "./../actions";
+import { fetchWeather } from "./../actions";
 import ToggleTemp from "./ToggleTemp";
 // import ToggleTempRedux from "./ToggleTempRedux";
 
 class WeatherDisplay extends Component {
-
   async componentDidMount() {
-  
-    if (!this.props.locationError) {
+    if (!this.props.weatherDetails.locationError) {
       await this.props.fetchWeather();
       // set background
       document.body.style.backgroundImage = `url(${this.props.weatherDetails
@@ -103,5 +101,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  {  fetchWeather }
+  { fetchWeather }
 )(WeatherDisplay);

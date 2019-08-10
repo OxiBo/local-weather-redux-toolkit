@@ -11,13 +11,16 @@ import {
 class SearchBar extends Component {
   onFormSubmit = async event => {
     event.preventDefault();
-    await this.props.setIntervalUpdate(this.props.visibleInterval);
+    const { setIntervalUpdate, visibleInterval, fetchWeather } = this.props;
+    await setIntervalUpdate(visibleInterval);
 
     const intervalID = setInterval(async () => {
-      await this.props.fetchWeather();
-    
+      await fetchWeather();
+
       //updateBackground
-      document.body.style.backgroundImage = `url(${ this.props.backgroundImageUrl })`;
+      document.body.style.backgroundImage = `url(${
+        this.props.backgroundImageUrl
+      })`;
     }, this.props.millisecondsInterval);
     setIntervalID(intervalID);
   };

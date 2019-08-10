@@ -29,7 +29,7 @@ class App extends Component {
             <h3> Loading... </h3>
           ) : locationError ? (
             <div className="errorMessage">{locationError}</div>
-          ) : this.props.weatherAPIError ? (
+          ) : weatherAPIError ? (
             <div className="errorMessage">{weatherAPIError}</div>
           ) : (
             <UpdateInfo />

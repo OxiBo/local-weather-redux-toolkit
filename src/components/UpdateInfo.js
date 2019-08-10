@@ -18,7 +18,6 @@ const UpdateInfo = props => {
       )}
       <div className="updated">
         <p>
-          {" "}
           Updated:
           {isLocationLoading && isWeatherLoading ? (
             <p> Loading... </p>
