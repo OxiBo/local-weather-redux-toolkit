@@ -1,22 +1,36 @@
-import { createStore, combineReducers, applyMiddleware, compose } from "redux";
-import thunk from "redux-thunk";
+import { configureStore } from "@reduxjs/toolkit";
+import { locationReducer } from "./slices/locationSlice";
+import { weatherReducer } from "./slices/weatherSlice";
 
-import { fetchLocationReducer, fetchWeatherReducer, setUpdateIntervalReducer } from "./../reducers";
-// import { fetchLocationReducer, fetchWeatherReducer, setUpdateIntervalReducer, toggleTempReducer } from "./../reducers";
-// setup redux extention https://github.com/zalmoxisus/redux-devtools-extension#usage (1.2  Advanced store setup)
 
-export default () => {
-  const composeEnhancers =
-    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+export const store = configureStore({
+  reducer: {
+    location: locationReducer,
+    weather: weatherReducer
 
-  const store = createStore(
-    combineReducers({
-      locationDetails: fetchLocationReducer,
-      weatherDetails: fetchWeatherReducer,
-      setUpdateInterval: setUpdateIntervalReducer,
-      // toggleTemp: toggleTempReducer
-    }),
-    composeEnhancers(applyMiddleware(thunk))
-  );
-  return store;
-};
+  }
+})
+
+
+export * from './thunk/fetchLocation'
+export * from './thunk/fetchWeather'
+
+
+// // import { fetchLocationReducer, fetchWeatherReducer, setUpdateIntervalReducer, toggleTempReducer } from "./../reducers";
+// // setup redux extension https://github.com/zalmoxisus/redux-devtools-extension#usage (1.2  Advanced store setup)
+
+// export default () => {
+//   const composeEnhancers =
+//     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+//   const store = createStore(
+//     combineReducers({
+//       locationDetails: fetchLocationReducer,
+//       weatherDetails: fetchWeatherReducer,
+//       setUpdateInterval: setUpdateIntervalReducer,
+//       // toggleTemp: toggleTempReducer
+//     }),
+//     composeEnhancers(applyMiddleware(thunk))
+//   );
+//   return store;
+// };

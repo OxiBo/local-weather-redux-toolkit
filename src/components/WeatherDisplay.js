@@ -1,8 +1,9 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import defaultImg from "../gallery/default1.jpg";
-import { fetchWeather } from "./../actions";
-import ToggleTemp from "./ToggleTemp";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import defaultImg from '../gallery/default1.jpg';
+//import { fetchWeather } from "./../actions";
+import { fetchWeather } from '../store/configureStore';
+import ToggleTemp from './ToggleTemp';
 // import ToggleTempRedux from "./ToggleTempRedux";
 
 class WeatherDisplay extends Component {
@@ -10,8 +11,9 @@ class WeatherDisplay extends Component {
     if (!this.props.weatherDetails.locationError) {
       await this.props.fetchWeather();
       // set background
-      document.body.style.backgroundImage = `url(${this.props.weatherDetails
-        .backgroundImageUrl || defaultImg})`;
+      document.body.style.backgroundImage = `url(${
+        this.props.weatherDetails.backgroundImageUrl || defaultImg
+      })`;
     }
   }
 
@@ -40,19 +42,19 @@ class WeatherDisplay extends Component {
   //   }
   // }
 
-  componentWillUnmount() {
-    document.body.style.backgroundColor = null;
-    clearInterval(this.props.intervalID);
-  }
-  render() {
-    const { city, region, country } = this.props.locationDetails;
+  // componentWillUnmount() {
+  //   document.body.style.backgroundColor = null;
+  //   clearInterval(this.props.intervalID);
+  // }
 
+  render() {  
+    const { city, region, country } = this.props.locationDetails;
     const {
       icon,
       temperature,
       humidity,
       description,
-      windSpeed
+      windSpeed,
     } = this.props.weatherDetails;
     return (
       <main>
@@ -63,7 +65,9 @@ class WeatherDisplay extends Component {
                 <img id="icon" src={icon} alt={description} />
               </div>
               {/* wrap the toggle component in "{temperature && }" to be able to pass props which comes from api call*/}
+
               {temperature && <ToggleTemp />}
+
               {/* {temperature && <ToggleTempRedux />} */}
             </div>
             <div className="container">
@@ -89,17 +93,14 @@ class WeatherDisplay extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  // console.log(state);
+const mapStateToProps = ({ location, weather }) => {
+
   return {
-    locationDetails: state.locationDetails.locationDetails,
-    isWeatherLoading: state.weatherDetails.isWeatherLoading,
-    weatherDetails: state.weatherDetails.weatherDetails,
-    intervalID: state.setUpdateInterval.intervalID
+    locationDetails: location.locationDetails,
+    isWeatherLoading: weather.weatherDetails.isWeatherLoading,
+    weatherDetails: weather.weatherDetails,
+    // intervalID: state.setUpdateInterval.intervalID,
   };
 };
 
-export default connect(
-  mapStateToProps,
-  { fetchWeather }
-)(WeatherDisplay);
+export default connect(mapStateToProps, { fetchWeather })(WeatherDisplay);

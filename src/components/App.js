@@ -1,13 +1,14 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { fetchLocation } from "./../actions";
-import "./styles.scss";
-import WeatherDisplay from "./WeatherDisplay";
-import UpdateInfo from "./UpdateInfo";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+//import { fetchLocation } from "./../actions";
+import './styles.scss';
+import WeatherDisplay from './WeatherDisplay';
+import UpdateInfo from './UpdateInfo';
+import { fetchLocation } from '../store/configureStore';
 // import defaultImg from "../gallery/default1.jpg";
 class App extends Component {
-  async componentDidMount() {
-    await this.props.fetchLocation();
+  componentDidMount() {
+    this.props.fetchLocation();
   }
 
   render() {
@@ -15,7 +16,7 @@ class App extends Component {
       isLocationLoading,
       isWeatherLoading,
       locationError,
-      weatherAPIError
+      weatherAPIError,
     } = this.props;
 
     return (
@@ -48,15 +49,13 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
+  
   return {
-    isLocationLoading: state.locationDetails.isLocationLoading,
-    locationError: state.locationDetails.locationError,
-    isWeatherLoading: state.weatherDetails.isWeatherLoading,
-    weatherAPIError: state.weatherDetails.weatherAPIError
+    isLocationLoading: state.location.isLocationLoading,
+    locationError: state.location.locationError,
+    isWeatherLoading: state.weather.isWeatherLoading,
+    weatherAPIError: '', //state.weatherDetails.weatherAPIError
   };
 };
-export default connect(
-  mapStateToProps,
-  { fetchLocation }
-)(App);
+export default connect(mapStateToProps, { fetchLocation })(App);

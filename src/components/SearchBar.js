@@ -12,7 +12,10 @@ class SearchBar extends Component {
   onFormSubmit = async event => {
     event.preventDefault();
     const { setIntervalUpdate, visibleInterval, fetchWeather } = this.props;
+   
     await setIntervalUpdate(visibleInterval);
+
+    const { millisecondsInterval } = this.props;
 
     const intervalID = setInterval(async () => {
       await fetchWeather();
@@ -21,7 +24,7 @@ class SearchBar extends Component {
       document.body.style.backgroundImage = `url(${
         this.props.backgroundImageUrl
       })`;
-    }, this.props.millisecondsInterval);
+    }, millisecondsInterval);
     setIntervalID(intervalID);
   };
 
@@ -34,7 +37,7 @@ class SearchBar extends Component {
     return (
       <div>
         <form onSubmit={this.onFormSubmit} action="">
-          <label htmlFor="interval">
+          {/* <label htmlFor="interval">
             <p>Update every</p>
           </label>
           <input
@@ -49,7 +52,9 @@ class SearchBar extends Component {
             value={this.props.visibleInterval}
             onChange={this.onChange}
           />
-          <p>hour(s)</p>
+          <p>hour(s)</p> */}
+
+          search window
         </form>
       </div>
     );
@@ -58,9 +63,9 @@ class SearchBar extends Component {
 
 const mapStateToProps = state => {
   return {
-    visibleInterval: state.setUpdateInterval.visibleInterval,
-    backgroundImageUrl: state.weatherDetails.weatherDetails.backgroundImageUrl,
-    millisecondsInterval: state.setUpdateInterval.millisecondsInterval
+    // visibleInterval: state.setUpdateInterval.visibleInterval,
+    // backgroundImageUrl: state.weatherDetails.weatherDetails.backgroundImageUrl,
+    // millisecondsInterval: state.setUpdateInterval.millisecondsInterval
   };
 };
 export default connect(

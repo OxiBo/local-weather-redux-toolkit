@@ -32,10 +32,10 @@ const UpdateInfo = props => {
 
 const mapStateToProps = state => {
   return {
-    isLocationLoading: state.locationDetails.isLocationLoading,
-    isWeatherLoading: state.weatherDetails.isWeatherLoading,
-    updatedTime: state.weatherDetails.weatherDetails.updatedTime,
-    interval: state.setUpdateInterval.interval
+    isLocationLoading: state.location.isLocationLoading,
+    isWeatherLoading: state.weather.isWeatherLoading,
+   // updatedTime: state.weather.weatherDetails.updatedTime,
+   // interval: state.setUpdateInterval.interval
   };
 };
 
