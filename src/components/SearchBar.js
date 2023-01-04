@@ -1,18 +1,14 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-
-import {
-  fetchWeather,
-  changeIntervalInput,
-  setIntervalUpdate,
-  setIntervalID
-} from "./../actions";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { fetchWeather } from '../store/configureStore';
+import { changeInterval } from '../store/configureStore';
+import { setIntervalUpdate, setIntervalID } from './../actions';
 
 class SearchBar extends Component {
-  onFormSubmit = async event => {
+  onFormSubmit = async (event) => {
     event.preventDefault();
     const { setIntervalUpdate, visibleInterval, fetchWeather } = this.props;
-   
+
     await setIntervalUpdate(visibleInterval);
 
     const { millisecondsInterval } = this.props;
@@ -21,23 +17,21 @@ class SearchBar extends Component {
       await fetchWeather();
 
       //updateBackground
-      document.body.style.backgroundImage = `url(${
-        this.props.backgroundImageUrl
-      })`;
+      document.body.style.backgroundImage = `url(${this.props.backgroundImageUrl})`;
     }, millisecondsInterval);
     setIntervalID(intervalID);
   };
 
-  onChange = event => {
-    // event.preventDefault(); // onChange even is not cancelable that is why this function will not work preventDefault()
-    this.props.changeIntervalInput(event.target.value);
+  onChange = (event) => {
+    console.log( event.target.value)
+    this.props.changeInterval(event.target.value);
   };
 
   render() {
     return (
       <div>
         <form onSubmit={this.onFormSubmit} action="">
-          {/* <label htmlFor="interval">
+          <label htmlFor="interval">
             <p>Update every</p>
           </label>
           <input
@@ -52,25 +46,25 @@ class SearchBar extends Component {
             value={this.props.visibleInterval}
             onChange={this.onChange}
           />
-          <p>hour(s)</p> */}
-
-          search window
+          <p>hour(s)</p>
         </form>
       </div>
     );
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = ({ interval, weather }) => {
   return {
-    // visibleInterval: state.setUpdateInterval.visibleInterval,
-    // backgroundImageUrl: state.weatherDetails.weatherDetails.backgroundImageUrl,
-    // millisecondsInterval: state.setUpdateInterval.millisecondsInterval
+    visibleInterval: interval.visibleInterval,
+    backgroundImageUrl: weather.weatherDetails.backgroundImageUrl,
+    millisecondsInterval: interval.millisecondsInterval,
   };
 };
-export default connect(
-  mapStateToProps,
-  { fetchWeather, changeIntervalInput, setIntervalUpdate, setIntervalID }
-)(SearchBar);
+export default connect(mapStateToProps, {
+  fetchWeather,
+  changeInterval,
+  setIntervalUpdate,
+  setIntervalID,
+})(SearchBar);
 
 //   onChange={e => this.setState({ interval: e.target.value })

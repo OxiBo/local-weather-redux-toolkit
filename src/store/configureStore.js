@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { intervalReducer } from "./slices/intervalSlice";
 import { locationReducer } from "./slices/locationSlice";
 import { weatherReducer } from "./slices/weatherSlice";
 
@@ -6,12 +7,12 @@ import { weatherReducer } from "./slices/weatherSlice";
 export const store = configureStore({
   reducer: {
     location: locationReducer,
-    weather: weatherReducer
-
+    weather: weatherReducer,
+    interval: intervalReducer
   }
 })
 
-
+export * from './slices/intervalSlice'
 export * from './thunk/fetchLocation'
 export * from './thunk/fetchWeather'
 
