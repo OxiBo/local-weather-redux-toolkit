@@ -81,7 +81,7 @@ export const fetchWeatherReducer = (
         updatedTime,
         backgroundImageUrl
       } = action.payload;
-      // console.log(state)
+      
       return {
         ...state,
         weatherDetails: {

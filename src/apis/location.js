@@ -1,10 +1,10 @@
-import axios from "axios";
+import axios from 'axios';
 
 const location = async () => {
   let response = {};
 
   try {
-    const locationDetails = await axios.get("https://ipapi.co/json/");
+    const locationDetails = await axios.get('https://ipapi.co/json/');
 
     response = {
       city: locationDetails.data.city,
@@ -12,18 +12,14 @@ const location = async () => {
       country: locationDetails.data.country,
       coords: {
         latitude: locationDetails.data.latitude,
-        longitude: locationDetails.data.longitude
+        longitude: locationDetails.data.longitude,
       },
       isLocationLoading: false,
-      locationError: ""
+      locationError: '',
     };
   } catch (error) {
     console.error(error);
-    response = {
-      isLocationLoading: false,
-      isWeatherLoading: false,
-      locationError: "Location information is unavailable"
-    };
+    throw new Error('Location information is unavailable');
   }
 
   return response;

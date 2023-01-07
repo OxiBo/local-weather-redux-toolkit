@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { backgroundImgReducer } from "./slices/backgroundImgSlice";
 import { intervalReducer } from "./slices/intervalSlice";
 import { locationReducer } from "./slices/locationSlice";
 import { weatherReducer } from "./slices/weatherSlice";
@@ -8,13 +9,15 @@ export const store = configureStore({
   reducer: {
     location: locationReducer,
     weather: weatherReducer,
-    interval: intervalReducer
+    interval: intervalReducer,
+    backgroundImg: backgroundImgReducer
   }
 })
 
 export * from './slices/intervalSlice'
 export * from './thunk/fetchLocation'
 export * from './thunk/fetchWeather'
+export * from './thunk/fetchImg'
 
 
 // // import { fetchLocationReducer, fetchWeatherReducer, setUpdateIntervalReducer, toggleTempReducer } from "./../reducers";

@@ -3,22 +3,20 @@ import { connect } from 'react-redux';
 //import { fetchLocation } from "./../actions";
 import './styles.scss';
 import WeatherDisplay from './WeatherDisplay';
-import UpdateInfo from './UpdateInfo';
+
 import { fetchLocation } from '../store/configureStore';
-// import defaultImg from "../gallery/default1.jpg";
+import { location } from '../apis/location';
+
 class App extends Component {
   componentDidMount() {
     this.props.fetchLocation();
   }
 
   render() {
-    const {
-      isLocationLoading,
-      isWeatherLoading,
-      locationError,
-      weatherAPIError,
-    } = this.props;
-
+    const { isLocationLoading, locationError, isLocationLoaded } = this.props;
+    console.log(locationError);
+    console.log(isLocationLoading);
+    console.log(!isLocationLoading && !locationError);
     return (
       <div className="mainContainer">
         <div className="main">
@@ -26,19 +24,9 @@ class App extends Component {
             <h1>Local weather APP</h1>
             <hr />
           </header>
-          {isLocationLoading || isWeatherLoading ? (
-            <h3> Loading... </h3>
-          ) : locationError ? (
-            <div className="errorMessage">{locationError}</div>
-          ) : weatherAPIError ? (
-            <div className="errorMessage">{weatherAPIError}</div>
-          ) : (
-            <UpdateInfo />
-          )}
-
-          {!isLocationLoading && !locationError && !weatherAPIError && (
-            <WeatherDisplay />
-          )}
+          {isLocationLoading && <h3>Loading...</h3>}
+          {locationError && <div className="errorMessage">{locationError}</div>}
+          {isLocationLoaded && <WeatherDisplay />}
         </div>
 
         <footer>
@@ -49,13 +37,14 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  
+const mapStateToProps = ({ location }) => {
   return {
-    isLocationLoading: state.location.isLocationLoading,
-    locationError: state.location.locationError,
-    isWeatherLoading: state.weather.isWeatherLoading,
-    weatherAPIError: '', //state.weatherDetails.weatherAPIError
+    isLocationLoading: location.isLocationLoading,
+    locationError: location.locationError,
+    // workaround for a small app
+    isLocationLoaded:
+      location.locationDetails.coords.latitude &&
+      location.locationDetails.coords.latitude,
   };
 };
 export default connect(mapStateToProps, { fetchLocation })(App);

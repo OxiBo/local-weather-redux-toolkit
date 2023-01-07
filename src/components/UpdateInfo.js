@@ -1,18 +1,17 @@
-import React from "react";
-import { connect } from "react-redux";
+import React from 'react';
+import { connect } from 'react-redux';
+import IntervalInput from './IntervalInput';
 
-import SearchBar from "./SearchBar";
-
-const UpdateInfo = props => {
+const UpdateInfo = (props) => {
   const { isLocationLoading, isWeatherLoading, updatedTime, interval } = props;
   return (
     <div className="update-bar">
-      <SearchBar />
+      <IntervalInput />
       {interval && (
         <div className="updated">
           <p>
-            The weather will be updated every{" "}
-            {interval === "1" ? "hour" : `${interval} hours`}
+            The weather will be updated every
+            {interval === '1' ? 'hour' : `${interval} hours`}
           </p>
         </div>
       )}
@@ -22,7 +21,7 @@ const UpdateInfo = props => {
           {isLocationLoading && isWeatherLoading ? (
             <p> Loading... </p>
           ) : (
-            updatedTime
+           <span>{updatedTime}</span> 
           )}
         </p>
       </div>
@@ -30,12 +29,12 @@ const UpdateInfo = props => {
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = ({ interval, location, weather }) => {
   return {
-    isLocationLoading: state.location.isLocationLoading,
-    isWeatherLoading: state.weather.isWeatherLoading,
-   // updatedTime: state.weather.weatherDetails.updatedTime,
-   // interval: state.setUpdateInterval.interval
+    isLocationLoading: location.isLocationLoading,
+    isWeatherLoading: weather.isWeatherLoading,
+    updatedTime: weather.weatherDetails.updatedTime,
+    interval: interval.interval,
   };
 };
 

@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { fetchWeather } from '../configureStore';
 
 const weatherSlice = createSlice({
+  name: 'weather',
   initialState: {
     weatherDetails: {
       icon: '',
@@ -11,23 +12,19 @@ const weatherSlice = createSlice({
       additionalDescription: '',
       windSpeed: '',
       apiID: null,
-      weatherAPIError: '',
       updatedTime: '',
       backgroundImageUrl: '',
     },
-    weatherAPIError: '',
+    weatherError: null,
     isWeatherLoading: false,
   },
-  name: 'weather',
   reducers: {},
   extraReducers(builder) {
     builder.addCase(fetchWeather.pending, (state, action) => {
-      return {
-        isWeatherLoading: true,
-        weatherAPIError: '',
-      };
+      state.isWeatherLoading = true;
     });
     builder.addCase(fetchWeather.fulfilled, (state, action) => {
+      console.log(action);
       const {
         icon,
         temperature,
@@ -36,31 +33,27 @@ const weatherSlice = createSlice({
         additionalDescription,
         windSpeed,
         apiID,
-        weatherAPIError,
         updatedTime,
         backgroundImageUrl,
       } = action.payload;
-      return {
-        weatherDetails: {
-          icon,
-          temperature,
-          humidity,
-          description,
-          additionalDescription,
-          windSpeed,
-          apiID,
-          weatherAPIError,
-          updatedTime,
-          backgroundImageUrl,
-        },
-        isWeatherLoading: false,
+      state.weatherDetails = {
+        icon,
+        temperature,
+        humidity,
+        description,
+        additionalDescription,
+        windSpeed,
+        apiID,
+        updatedTime,
+        backgroundImageUrl,
       };
+      state.isWeatherLoading = false;
     });
     builder.addCase(fetchWeather.rejected, (state, action) => {
       return {
         isLocationLoading: false,
         isWeatherLoading: false,
-        weatherAPIError: 'Failed to load local weather.',
+        weatherError: action.error.message,
       };
     });
   },

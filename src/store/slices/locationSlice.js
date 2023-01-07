@@ -10,9 +10,8 @@ const initialState = {
       longitude: null,
     },
   },
-  locationError: '',
-  isLocationLoading: true,
-  isWeatherLoading: true,
+  locationError: null,
+  isLocationLoading: false,
 };
 
 const locationSlice = createSlice({
@@ -21,34 +20,24 @@ const locationSlice = createSlice({
   reducers: {},
   extraReducers(builder) {
     builder.addCase(fetchLocation.pending, (state, action) => {
-      return {
-        isLocationLoading: true,
-        isWeatherLoading: true,
-        locationError: '',
-      };
+      state.isLocationLoading = true;
     });
     builder.addCase(fetchLocation.fulfilled, (state, action) => {
       const { coords, city, region, country } = action.payload;
-      return {
-        locationDetails: {
-          coords: {
-            latitude: coords.latitude,
-            longitude: coords.longitude,
-          },
-          city,
-          region,
-          country,
+      state.locationDetails = {
+        coords: {
+          latitude: coords.latitude,
+          longitude: coords.longitude,
         },
-        isLocationLoading: false,
-        locationError: '',
+        city,
+        region,
+        country,
       };
+      state.isLocationLoading = false;
     });
     builder.addCase(fetchLocation.rejected, (state, action) => {
-      return {
-        isLocationLoading: false,
-        isWeatherLoading: false,
-        locationError: 'Location information is unavailable',
-      };
+      state.isLocationLoading = false;
+      state.locationError = 'Location information is unavailable';
     });
   },
 });
